@@ -36,5 +36,9 @@
     <string name="bt_close">Cerrar</string>
     <string name="bt_ok">Ok</string>
     <string name="bt_cancel">Cancelar</string>
+    <string name="title_activity_csfhome">CSFHomeActivity</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

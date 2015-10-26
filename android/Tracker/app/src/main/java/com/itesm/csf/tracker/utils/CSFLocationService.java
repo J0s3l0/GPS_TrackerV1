@@ -33,8 +33,6 @@ public class CSFLocationService extends Service implements
 
     private static final String TAG = "LocationService";
 
-    // use the websmithing defaultUploadWebsite for testing and then check your
-    // location with your browser here: https://www.websmithing.com/gpstracker/displaymap.php
     private String defaultUploadWebsite;
 
     private boolean currentlyProcessingLocation = false;
@@ -45,7 +43,6 @@ public class CSFLocationService extends Service implements
     public void onCreate() {
         super.onCreate();
 
-        //defaultUploadWebsite = getString(R.string.default_upload_website);
         defaultUploadWebsite = CSFGlobalVariables.API_BASE + CSFGlobalVariables.API_LOCATION;
     }
 
@@ -175,8 +172,8 @@ public class CSFLocationService extends Service implements
             Log.e(TAG, "position: " + location.getLatitude() + ", " + location.getLongitude() + " accuracy: " + location.getAccuracy());
 
             // we have our desired accuracy of 500 meters so lets quit this service,
-            // onDestroy will be called and stop our location uodates
-            if (location.getAccuracy() < 500.0f) {
+            // onDestroy will be called and stop our location updates
+            if (location.getAccuracy() < CSFGlobalVariables.DIAMETER) {
                 stopLocationUpdates();
                 sendLocationDataToWebsite(location);
             }

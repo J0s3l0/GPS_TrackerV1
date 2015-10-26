@@ -18,14 +18,14 @@ public class CSFTrackerBootReceiver extends BroadcastReceiver {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("gpstracker.prefs", Context.MODE_PRIVATE);
-        int intervalInMinutes = sharedPreferences.getInt("intervalInMinutes", 1);
+        int intervalInSeconds = sharedPreferences.getInt("intervalInSeconds", 1);
         Boolean currentlyTracking = sharedPreferences.getBoolean("currentlyTracking", false);
 
         if (currentlyTracking) {
             alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime(),
                     //intervalInMinutes * 60000, // 60000 = 1 minute,
-                    intervalInMinutes * 1000,
+                    intervalInSeconds * 1000,
                     pendingIntent);
         } else {
             alarmManager.cancel(pendingIntent);
