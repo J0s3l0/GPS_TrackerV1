@@ -11,21 +11,23 @@
     <TextView
         android:text="@string/login_no_user"
         android:id="@+id/tv_user"
-        style="@style/txtUser" />
+        style="@style/txtUser"
+        android:layout_alignParentTop="true"/>
 
 
-    <!--EditText
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/txtUserName"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/tv_user"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:hint="@string/user_name" />
+        android:hint="@string/user_name"
+        android:visibility="invisible"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -78,7 +80,7 @@
             android:layout_height="wrap_content"
             android:text="@string/fifteen_minutes" >
         </RadioButton>
-    </RadioGroup-->
+    </RadioGroup>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

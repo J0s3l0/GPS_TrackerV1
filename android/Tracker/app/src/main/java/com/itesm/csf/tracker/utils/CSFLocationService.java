@@ -43,7 +43,8 @@ public class CSFLocationService extends Service implements
     public void onCreate() {
         super.onCreate();
 
-        defaultUploadWebsite = CSFGlobalVariables.API_BASE + CSFGlobalVariables.API_LOCATION;
+        defaultUploadWebsite = CSFGlobalVariables.API_BASE+CSFGlobalVariables.API_LOCATION;
+        //defaultUploadWebsite = getString(R.string.default_upload_website);
     }
 
     @Override

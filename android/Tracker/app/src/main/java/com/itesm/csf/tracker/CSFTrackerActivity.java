@@ -23,6 +23,8 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.itesm.csf.tracker.utils.CSFGlobalVariables;
 import com.itesm.csf.tracker.utils.CSFTrackerAlarmReceiver;
 
+import org.w3c.dom.Text;
+
 import java.util.UUID;
 
 public class CSFTrackerActivity extends AppCompatActivity {
@@ -31,24 +33,33 @@ public class CSFTrackerActivity extends AppCompatActivity {
 
     private String defaultUploadWebsite;
 
-    private static TextView username;
+    private static TextView tvUser;
+    private static EditText txtUserName;
+    private static EditText txtWebsite;
     private static Button trackingButton;
 
     private boolean currentlyTracking;
-    private int intervalInSeconds = 10;
+    private RadioGroup intervalRadioGroup;
+    private int intervalInMinutes = 1;
     private AlarmManager alarmManager;
     private Intent gpsTrackerIntent;
     private PendingIntent pendingIntent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_csftracker);
 
-        defaultUploadWebsite = CSFGlobalVariables.API_BASE + CSFGlobalVariables.API_LOCATION;
+        //defaultUploadWebsite = getString(R.string.default_upload_website);
+        defaultUploadWebsite = CSFGlobalVariables.API_BASE+CSFGlobalVariables.API_LOCATION;
 
-        username = (TextView)findViewById(R.id.tv_user);
+        tvUser = (TextView) findViewById(R.id.tv_user);
+        txtWebsite = (EditText)findViewById(R.id.txtWebsite);
+        txtUserName = (EditText)findViewById(R.id.txtUserName);
+        intervalRadioGroup = (RadioGroup)findViewById(R.id.intervalRadioGroup);
         trackingButton = (Button)findViewById(R.id.trackingButton);
+        txtUserName.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("gpstracker.prefs", Context.MODE_PRIVATE);
         currentlyTracking = sharedPreferences.getBoolean("currentlyTracking", false);
@@ -62,8 +73,15 @@ public class CSFTrackerActivity extends AppCompatActivity {
         }
 
         loadData();
-        saveInterval();
-        saveUserSettings();
+
+
+        intervalRadioGroup.setOnCheckedChangeListener(
+                new RadioGroup.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                        saveInterval();
+                    }
+                });
 
         trackingButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -80,13 +98,19 @@ public class CSFTrackerActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = this.getSharedPreferences("gpstracker.prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("intervalInSeconds", CSFGlobalVariables.TIME_CLOCK);
-        editor.apply();
-    }
+        switch (intervalRadioGroup.getCheckedRadioButtonId()) {
+            case R.id.i1:
+                editor.putInt("intervalInSeconds", 5);
+                break;
+            case R.id.i5:
+                editor.putInt("intervalInSeconds", 10);
+                break;
+            case R.id.i15:
+                editor.putInt("intervalInSeconds", 15);
+                break;
+        }
 
-    private void loadData(){
-        SharedPreferences userProfile = getSharedPreferences("tokenUser", Context.MODE_PRIVATE);
-        username.setText(userProfile.getString("User",""));
+        editor.apply();
     }
 
     private void startAlarmManager() {
@@ -98,11 +122,11 @@ public class CSFTrackerActivity extends AppCompatActivity {
         pendingIntent = PendingIntent.getBroadcast(context, 0, gpsTrackerIntent, 0);
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("gpstracker.prefs", Context.MODE_PRIVATE);
-        intervalInSeconds = sharedPreferences.getInt("intervalInMinutes", 1);
+        intervalInMinutes = sharedPreferences.getInt("intervalInSeconds", 1);
 
         alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                 SystemClock.elapsedRealtime(),
-                intervalInSeconds * 1000, // 60000 = 1 minute
+                intervalInMinutes * 1000, // 60000 = 1 minute
                 pendingIntent);
     }
 
@@ -150,15 +174,29 @@ public class CSFTrackerActivity extends AppCompatActivity {
     }
 
     private boolean saveUserSettings() {
-        /*if (textFieldsAreEmptyOrHaveSpaces()) {
+        loadData();
+        if (textFieldsAreEmptyOrHaveSpaces()) {
+            Log.e(TAG, "username no charged");
             return false;
-        }*/
+        }
 
         SharedPreferences sharedPreferences = this.getSharedPreferences("gpstracker.prefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt("intervalInSeconds", CSFGlobalVariables.TIME_CLOCK);
-        editor.putString("userName", username.getText().toString());
-        editor.putString("defaultUploadWebsite", defaultUploadWebsite);
+
+        switch (intervalRadioGroup.getCheckedRadioButtonId()) {
+            case R.id.i1:
+                editor.putInt("intervalInSeconds", 5);
+                break;
+            case R.id.i5:
+                editor.putInt("intervalInSeconds", 10);
+                break;
+            case R.id.i15:
+                editor.putInt("intervalInSeconds", 15);
+                break;
+        }
+
+        editor.putString("userName", txtUserName.getText().toString().trim());
+        editor.putString("defaultUploadWebsite", txtWebsite.getText().toString().trim());
 
         editor.apply();
 
@@ -166,9 +204,10 @@ public class CSFTrackerActivity extends AppCompatActivity {
     }
 
     private boolean textFieldsAreEmptyOrHaveSpaces() {
+        String tempUserName = txtUserName.getText().toString().trim();
+        String tempWebsite = txtWebsite.getText().toString().trim();
 
-
-        if (username.length() == 0 || hasSpaces(username.getText().toString()) ) {
+        if (tempWebsite.length() == 0 || hasSpaces(tempWebsite) || tempUserName.length() == 0 || hasSpaces(tempUserName)) {
             Toast.makeText(this, R.string.textfields_empty_or_spaces, Toast.LENGTH_LONG).show();
             return true;
         }
@@ -178,6 +217,26 @@ public class CSFTrackerActivity extends AppCompatActivity {
 
     private boolean hasSpaces(String str) {
         return ((str.split(" ").length > 1) ? true : false);
+    }
+
+    private void displayUserSettings() {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("gpstracker.prefs", Context.MODE_PRIVATE);
+        intervalInMinutes = sharedPreferences.getInt("intervalInSeconds", 1);
+
+        switch (intervalInMinutes) {
+            case 1:
+                intervalRadioGroup.check(R.id.i1);
+                break;
+            case 5:
+                intervalRadioGroup.check(R.id.i5);
+                break;
+            case 15:
+                intervalRadioGroup.check(R.id.i15);
+                break;
+        }
+
+        txtWebsite.setText(sharedPreferences.getString("defaultUploadWebsite", defaultUploadWebsite));
+        txtUserName.setText(sharedPreferences.getString("userName", ""));
     }
 
     private boolean checkIfGooglePlayEnabled() {
@@ -202,11 +261,19 @@ public class CSFTrackerActivity extends AppCompatActivity {
         }
     }
 
+    private void loadData(){
+        SharedPreferences userProfile = getSharedPreferences("tokenUser", Context.MODE_PRIVATE);
+        txtUserName.setText(userProfile.getString("User",""));
+        tvUser.setText(userProfile.getString("User",""));
+    }
+
+
     @Override
     public void onResume() {
         Log.d(TAG, "onResume");
         super.onResume();
 
+        displayUserSettings();
         setTrackingButtonState();
     }
 

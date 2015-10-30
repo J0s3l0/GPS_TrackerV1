@@ -24,7 +24,6 @@ public class CSFTrackerBootReceiver extends BroadcastReceiver {
         if (currentlyTracking) {
             alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime(),
-                    //intervalInMinutes * 60000, // 60000 = 1 minute,
                     intervalInSeconds * 1000,
                     pendingIntent);
         } else {

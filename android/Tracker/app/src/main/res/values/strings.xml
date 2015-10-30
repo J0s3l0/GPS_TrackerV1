@@ -14,10 +14,10 @@
     <string name="google_play_services_unavailable">Please go into Settings > Apps > All and enable Google Play Services.</string>
     <string name="user_name">user name</string>
     <string name="upload_website">upload website</string>
-    <string name="upload_frequency">Update website every:</string>
-    <string name="one_minute">1 minute</string>
-    <string name="five_minutes">5 minutes</string>
-    <string name="fifteen_minutes">15 minutes</string>
+    <string name="upload_frequency">Update position every:</string>
+    <string name="one_minute">5 second</string>
+    <string name="five_minutes">10 seconds</string>
+    <string name="fifteen_minutes">15 seconds</string>
     <string name="title_activity_csfsplash">CSFSplashActivity</string>
     <string name="title_activity_csflogin">CSFLoginActivity</string>
 
