@@ -43,21 +43,21 @@ public class CSFLoginActivity extends Activity implements CSFWebBridge.WebBridge
     }
 
     private void initialize(){
-        user        = (EditText) findViewById(R.id.login_num_emp);
+        user         = (EditText) findViewById(R.id.login_num_emp);
         pass         = (EditText) findViewById(R.id.login_pass);
         btnAccess    = (Button) findViewById(R.id.login_btn_access);
-        //btnRegister  = (Button) findViewById(R.id.login_btn_register);
-        //btnForgot    = (Button) findViewById(R.id.login_btn_forgot);
+        btnRegister  = (Button) findViewById(R.id.login_btn_register);
+        btnForgot    = (Button) findViewById(R.id.login_btn_forgot);
         txtError     = (TextView) findViewById(R.id.login_txt_error);
 
-        /*
-        noEmp       .setTypeface(CSFFont.get(this, "fredoka"));
+
+        user        .setTypeface(CSFFont.get(this, "fredoka"));
         pass        .setTypeface(CSFFont.get(this, "fredoka"));
         btnAccess   .setTypeface(CSFFont.get(this, "fredoka"));
         btnRegister .setTypeface(CSFFont.get(this, "fredoka"));
         btnForgot   .setTypeface(CSFFont.get(this, "fredoka"));
         txtError    .setTypeface(CSFFont.get(this, "fredoka"));
-        */
+
     }
 
      /*-----------------*/
@@ -134,19 +134,21 @@ public class CSFLoginActivity extends Activity implements CSFWebBridge.WebBridge
                 .show();
     }
 
-/*
+
     public void registerAction(View v){
-        Intent i = new Intent(CSFLoginActivity.this, CSFRegisterActivity.class);
+        /*Intent i = new Intent(CSFLoginActivity.this, CSFRegisterActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.slide_up_info, R.anim.no_change);
+        */
     }
 
     public void recoverAction(View v){
-        Intent i = new Intent(KCOLoginActivity.this, KCORecoverPassActivity.class);
+        /*Intent i = new Intent(CSFLoginActivity.this, CSFRecoverPassActivity.class);
         startActivity(i);
         overridePendingTransition(R.anim.left_in,R.anim.left_out);
+        */
     }
-*/
+
 
      /*-----------------*/
 	/* OVERRIDE RESULT */

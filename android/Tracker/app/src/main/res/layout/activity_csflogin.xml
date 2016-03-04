@@ -9,13 +9,14 @@
     android:background="@color/back_login"
     tools:context="com.itesm.csf.tracker.CSFLoginActivity">
 
-    <!--ImageView
+    <ImageView
         android:id="@+id/login_logo"
-        android:src="@drawable/logo"
+        android:src="@drawable/car"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="30dp"/-->
+        android:gravity="center_horizontal"
+        android:layout_above="@+id/ll_login"
+        android:layout_centerHorizontal="true" />
 
     <LinearLayout
         android:id="@+id/ll_login"
@@ -30,7 +31,7 @@
             android:ems="10"
             android:id="@+id/login_num_emp"
             android:hint="@string/login_no_user"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="20dp"/>
 
         <EditText
@@ -53,27 +54,27 @@
             android:text="@string/login_access"
             android:id="@+id/login_btn_access"
             android:onClick="homeAction"
-            android:layout_marginTop="40dp"/>
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 
 
 
-    <!--Button
+    <Button
         style="@style/buttonLogin2"
         android:text="@string/login_register"
         android:id="@+id/login_btn_register"
         android:onClick="registerAction"
         android:layout_marginBottom="1dp"
         android:layout_centerHorizontal="true"
-        android:layout_above="@+id/login_btn_forgot"/-->
+        android:layout_above="@+id/login_btn_forgot"/>
 
-    <!--Button
+    <Button
         style="@style/buttonLoginFree"
         android:text="@string/login_forgot"
         android:id="@+id/login_btn_forgot"
         android:onClick="recoverAction"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/-->
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
